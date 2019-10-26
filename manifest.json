@@ -2,15 +2,20 @@
     "name": "Getting Started Example",
     "version": "1.0",
     "description": "Build an Extension!",
+    "content_security_policy": "script-src 'self' https://apis.google.com/; object-src 'self'",
     "permissions": [
         "storage",
-        "declarativeContent"
+        "declarativeContent",
+        "activeTab",
+        "identity"
+        // "*://*.googleapis.com/*",
+        // "*://*.apis.google.com/*"
     ],
     "background": {
         "scripts": [
             "background.js"
         ],
-        "persistent": true
+        "persistent": false
     },
     "page_action": {
         "default_popup": "popup.html"
