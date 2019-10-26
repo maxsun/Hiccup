@@ -1,15 +1,10 @@
-console.log("Background js running...");
-
-chrome.runtime.onInstalled.addListener(function () {
-    console.log("Runtime installed...");
-
-    chrome.declarativeContent.onPageChanged.removeRules(undefined, function () {
-        chrome.declarativeContent.onPageChanged.addRules([{
-            conditions: [new chrome.declarativeContent.PageStateMatcher({
-                pageUrl: { hostEquals: 'developer.chrome.com' },
-            })
-            ],
-            actions: [new chrome.declarativeContent.ShowPageAction()]
-        }]);
+chrome.commands.onCommand.addListener(function(command) {
+  if (command == "toggle-pin") {
+    // Get the currently selected tab
+    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+      // Toggle the pinned status
+      var current = tabs[0]
+      chrome.tabs.update(current.id, {'pinned': !current.pinned});
     });
+  }
 });
