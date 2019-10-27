@@ -1,24 +1,46 @@
 {
     "name": "Getting Started Example",
     "version": "1.0",
+    "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAipd3TTnVCHgw52btVgdN9UCwROKeCFE1P/YV3UqKc7+np6/kJNjrcdvRf1/t1W65pSBBnZ8yBz968QHjhlNlacufQgne4G1SKBMF7A0rABaAD7qJxlq8+79U+QVMFFm1MM2FIYLck18qpnEUZw3luasKo9HkyI2h0ImTZnNmHRM+wwqQVCKja+mZ4F33IfGThzmptdmdNNpslnujxdl63oym9gdL2sDDHVIAIk/L/EYKpVo2HBetsG/GKhGK/nuyzjAMwhsh/qqwnGq2Zuy1/5Pg2WJQnpm/98PLkvIt5uYQquGJFCY/87ncHzBNGQJJN+9Ww69GR0t44I/Ug3qC3wIDAQAB",
     "description": "Build an Extension!",
-    "content_security_policy": "script-src 'self' https://apis.google.com/; object-src 'self'",
     "permissions": [
+        "https://docs.google.com/spreadsheets/",
+        "https://script.google.com/",
+        "https://sheets.googleapis.com/*",
+        "identity",
+        "identity.email",
+        "tabs",
         "storage",
-        "declarativeContent",
-        "activeTab",
-        "identity"
-        // "*://*.googleapis.com/*",
-        // "*://*.apis.google.com/*"
+        "management",
+        "notifications",
+        "webRequestBlocking",
+        "unlimitedStorage"
     ],
     "background": {
         "scripts": [
-            "background.js"
+            "background.js",
+            "sheets_api.js"
         ],
-        "persistent": false
+        "persistent": true
     },
-    "page_action": {
+    "browser_action": {
+        "default_icon": "logo.png",
+        "default_title": "Hiccup",
         "default_popup": "popup.html"
     },
-    "manifest_version": 2
+    "oauth2": {
+        "client_id": "1054040626297-ha237ab4ec7mjrg0m5bsdmqnn201o0fe.apps.googleusercontent.com",
+        "spreadsheetId": "",
+        "key": "",
+        "scopes": [
+            "https://www.googleapis.com/auth/userinfo.email",
+            "profile",
+            "https://www.googleapis.com/auth/spreadsheets"
+        ]
+    },
+    "content_security_policy": "script-src 'self' 'unsafe-eval' https://apis.google.com/; object-src 'self'",
+    "manifest_version": 2,
+    "web_accessible_resources": [
+        "*.*"
+    ]
 }
