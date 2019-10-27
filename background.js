@@ -19,11 +19,15 @@ chrome.tabs.onActivated.addListener(function (tab) {
         chrome.storage.sync.get('HICCUP_SHEET', function (items) {
             if (Object.keys(items).length == 0) {
                 // no sheet id found
-                runGAPICall(create_sheet);
-
-                // copy files into this sheet
-                chrome.identity.getAuthToken({ 'interactive': true }, copy_sheet);
-                chrome.storage.sync.set({'HICCUP_SHEET' : 'item temp'}, function() {
+                console.log('RUNNING CREATE SHEET');
+                runGAPICall(create_sheet, function (created_sheet) {
+                    let sheet_id = created_sheet.result.spreadsheetId
+                    console.log('CREATED SHEET')
+                    console.log(sheet_id);
+                    // copy files into this sheet
+                    chrome.storage.sync.set({ 'HICCUP_SHEET': sheet_id }, function () {
+                        runGAPICall(copy_sheet, sheet_id);
+                    });
                 });
             }
             // write to google sheet
@@ -41,39 +45,39 @@ chrome.runtime.onMessage.addListener(function (request, _, sendResponse) {
 
 //acquire gapi authentication
 function authorize() {
-    chrome.identity.getAuthToken({ 'interactive': true }, function(token) {
+    chrome.identity.getAuthToken({ 'interactive': true }, function (token) {
         window.gapi_onload = function () {
             gapi.auth.authorize(
-            {
-                client_id: manifestData.oauth2.client_id,
-                immediate: true,
-                scope: manifestData.oauth2.scopes.join(', ')
-            },
-            function() {
-                gapi.client.load('sheets', 'v4', function () {
-                    gapi.auth.setToken({access_token: token});
+                {
+                    client_id: manifestData.oauth2.client_id,
+                    immediate: true,
+                    scope: manifestData.oauth2.scopes.join(', ')
+                },
+                function () {
+                    gapi.client.load('sheets', 'v4', function () {
+                        gapi.auth.setToken({ access_token: token });
+                    });
                 });
-            });
         };
         loadScript('https://apis.google.com/js/client.js');
     });
 }
 
-function runGAPICall(toCall) {
-    chrome.identity.getAuthToken({ 'interactive': true }, function(token) {
+function runGAPICall(toCall, callback) {
+    chrome.identity.getAuthToken({ 'interactive': true }, function (token) {
         window.gapi_onload = function () {
             gapi.auth.authorize(
-            {
-                client_id: manifestData.oauth2.client_id,
-                immediate: true,
-                scope: manifestData.oauth2.scopes.join(', ')
-            },
-            function() {
-                gapi.client.load('sheets', 'v4', function () {
-                    gapi.auth.setToken({access_token: token});
-                    toCall(gapi);
+                {
+                    client_id: manifestData.oauth2.client_id,
+                    immediate: true,
+                    scope: manifestData.oauth2.scopes.join(', ')
+                },
+                function () {
+                    gapi.client.load('sheets', 'v4', function () {
+                        gapi.auth.setToken({ access_token: token });
+                        toCall(gapi, callback);
+                    });
                 });
-            });
         };
         loadScript('https://apis.google.com/js/client.js');
     });
