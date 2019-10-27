@@ -18,6 +18,7 @@ chrome.tabs.onActivated.addListener(function (tab) {
         // attempt to write the row to the sheet
         chrome.storage.sync.get('HICCUP_SHEET', function (items) {
             if (Object.keys(items).length == 0) {
+                // if (true) {
                 // no sheet id found
                 console.log('RUNNING CREATE SHEET');
                 runGAPICall(create_sheet, function (created_sheet) {
@@ -26,12 +27,28 @@ chrome.tabs.onActivated.addListener(function (tab) {
                     console.log(sheet_id);
                     // copy files into this sheet
                     chrome.storage.sync.set({ 'HICCUP_SHEET': sheet_id }, function () {
-                        runGAPICall(copy_sheet, sheet_id);
+                        console.log("copying sheet");
+                        runGAPICall(copy_sheet, function () {
+                            runGAPICall(append_to_sheet, {
+                                sheet_id: items['HICCUP_SHEET'],
+                                title: activeTab.title,
+                                url: activeTab.url,
+                                time: Date.now()
+                            });
+                        });
                     });
                 });
+            } else {
+                // write to google sheet'
+                // runGAPICall(append_to_sheet, items['HICCUP_SHEET']);
+                runGAPICall(append_to_sheet, {
+                    sheet_id: items['HICCUP_SHEET'],
+                    title: activeTab.title,
+                    url: activeTab.url,
+                    time: Date.now()
+                });
             }
-            // write to google sheet
-            console.log(items['HICCUP_SHEET']);
+
         });
     });
 });
