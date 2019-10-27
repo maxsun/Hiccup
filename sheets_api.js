@@ -11,8 +11,9 @@ function get_sheet(token) {
         },
         'contentType': 'json'
     };
+        console.log(token);
     fetch(
-        'https://sheets.googleapis.com/v4/spreadsheets/13QMMogS7svQ7b1nBcEuIdsrCy7yTOmYHQ6KKdrSHz7I',
+        'https://sheets.googleapis.com/v4/spreadsheets/1wpRwl8ECNeqjUIrl3CQyt9qwV3jDy-nkMiuC5EfC5Hs',
         init)
         .then((response) => response.json())
         .then(function (data) {
@@ -21,8 +22,44 @@ function get_sheet(token) {
 }
 
 // To be implemented
-function create_sheet() {
+function copy_sheet(token) {
+    console.log('Getting Sheet...');
+    let init = {
+        method: 'POST',
+        async: true,
+        headers: {
+            Authorization: 'Bearer ' + token,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify({desinationSpreadsheetID: "12345"}),
+        'contentType': 'json'
+    };
+    // copy URLS
+    console.log(token);
+    fetch(
+        'https://sheets.googleapis.com/v4/spreadsheets/1wpRwl8ECNeqjUIrl3CQyt9qwV3jDy-nkMiuC5EfC5Hs/sheets/api/0:copyTo',
+        init)
+        .then((response) => console.log(response));
+    // copy CALCS
+    fetch(
+        'https://sheets.googleapis.com/v4/spreadsheets/1wpRwl8ECNeqjUIrl3CQyt9qwV3jDy-nkMiuC5EfC5Hs/sheets/api/1950162848:copyTo',
+        init)
+        .then((response) => console.log(response));
+    // copy CATEGORIES
+    fetch(
+        'https://sheets.googleapis.com/v4/spreadsheets/1wpRwl8ECNeqjUIrl3CQyt9qwV3jDy-nkMiuC5EfC5Hs/sheets/api/1844542734:copyTo',
+        init)
+        .then((response) => console.log(response));
+}
 
+function create_sheet(gapi0) {
+    gapi0.client.sheets.spreadsheets.create({
+      properties: {
+        title: "Hiccup Data Sheet"
+      }
+    }).then((response) => {
+    });
 }
 
 // To be implemented
