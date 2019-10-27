@@ -24,7 +24,7 @@
         "persistent": true
     },
     "browser_action": {
-        "default_icon": "logo.png",
+        "default_icon": "logo-green.png",
         "default_title": "Hiccup",
         "default_popup": "popup.html"
     },
