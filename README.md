@@ -11,3 +11,5 @@ Logging your active tabs in a Google Sheets that you can manage directly.
 We create colorful visualizations for you, and allow you to create your own!
 
 ![Hiccup 3](https://user-images.githubusercontent.com/32023640/67633196-2c99a780-f86a-11e9-888b-28a220c8ade0.png)
+
+Submission: https://devpost.com/software/hiccup-sxf4d9
